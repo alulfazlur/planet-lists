@@ -90,6 +90,24 @@ export default function planetsReducer(planetsState = initialState, action) {
         errorMessage: action.payload,
         isLoading: false,
       };
+
+    case types.ADD_PLANETS:
+      return {
+        ...planetsState,
+        planets: [{ name: action.payload }, ...planetsState.planets],
+      };
+    case types.EDIT_PLANETS:
+      let newPlanets = planetsState.planets.filter(
+        (o) => o.url !== action.payload.origin
+      );
+      let edit = planetsState.planets.find(
+        (o) => o.url === action.payload.origin
+      );
+      edit.name = action.payload.name;
+      return {
+        ...planetsState,
+        planets: [edit, ...newPlanets],
+      };
     default:
       return planetsState;
   }
