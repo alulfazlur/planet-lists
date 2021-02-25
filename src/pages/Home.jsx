@@ -14,6 +14,8 @@ import {
   fetchPlanetsScroll,
   fetchPlanetDetails,
   searchPlanets,
+  addPlanets,
+  editPlanets,
 } from "../stores/planets/planets.actions";
 
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -22,6 +24,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 const Home = (props) => {
   const [pages, setPages] = useState(2);
   const [keyword, setKeyword] = useState("");
+  const [name, setName] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -31,6 +34,8 @@ const Home = (props) => {
     fetchPlanetsScroll,
     fetchPlanetDetails,
     searchPlanets,
+    addPlanets,
+    editPlanets,
   } = props;
 
   // state
@@ -56,7 +61,11 @@ const Home = (props) => {
   const onViewDetails = async (url) => {
     await fetchPlanetDetails(url);
     // setTimeout(() => setShowModal(true), 500);
-    setShowModal(true)
+    setShowModal(true);
+  };
+
+  const onSubmitEdit = (url) => {
+    editPlanets(name, url);
   };
 
   useEffect(() => {
@@ -77,7 +86,7 @@ const Home = (props) => {
         onChange={(v) => setKeyword(v.target.value)}
         isLoading={isLoadingSearch}
       />
-      <Sidebar onClick={() => setShowAlert(true)}/>
+      <Sidebar onClick={() => setShowAlert(true)} />
       <div className="text-gray-700 h-full w-full mr-10">
         {showModal && (
           <Modal
@@ -86,11 +95,7 @@ const Home = (props) => {
             details={details}
           />
         )}
-        {showAlert && (
-          <AlertModal
-            toggleModal={() => setShowAlert(false)}
-          />
-        )}
+        {showAlert && <AlertModal toggleModal={() => setShowAlert(false)} />}
         <div className="ml-32 pt-24 mr-10">
           {isLoading ? (
             <ClipLoader
@@ -103,6 +108,7 @@ const Home = (props) => {
             <InfiniteScroll
               dataLength={planetLists.length}
               next={fetchMoreData}
+              height={650}
               hasMore={true}
               loader={
                 isLoadingScroll ? (
@@ -112,9 +118,29 @@ const Home = (props) => {
                 ) : null
               }
             >
-              <Table data={planetLists} viewDetail={onViewDetails} />
+              <Table
+                data={planetLists}
+                viewDetail={onViewDetails}
+                submitEdit={onSubmitEdit}
+              />
             </InfiniteScroll>
           )}
+          <input
+            title="Search Bar"
+            aria-label="search bar"
+            role="search"
+            className="pr-8 pl-4 py-2 rounded-md cursor-pointer border-black w-64 placeholder-gray-500 mt-10 ml-5"
+            type="text"
+            placeholder="Type your planet..."
+            value={name}
+            onChange={(v) => setName(v.target.value)}
+          />
+          <button
+            className="ml-5 bg-green-500 text-sm text-white p-5 w-30"
+            onClick={() => addPlanets(name)}
+          >
+            submit
+          </button>
         </div>
       </div>
     </div>
@@ -137,5 +163,7 @@ const dispatchProps = {
   fetchPlanetsScroll,
   fetchPlanetDetails,
   searchPlanets,
+  addPlanets,
+  editPlanets,
 };
 export default connect(stateProps, dispatchProps)(Home);

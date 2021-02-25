@@ -23,7 +23,6 @@ export const fetchPlanets = () => {
 };
 
 export const fetchPlanetsScroll = (page = 2) => {
-  console.log("masuk", page);
   return (dispatch) => {
     dispatch({ type: types.FETCH_PLANETS_SCROLL_START });
     axios({
@@ -51,8 +50,8 @@ export const fetchPlanetDetails = (url) => {
       url,
     })
       .then((res) => {
-        delete res.data.residents
-        delete res.data.films
+        delete res.data.residents;
+        delete res.data.films;
         dispatch({
           type: types.DETAIL_PLANETS_SUCCESS,
           payload: res.data,
@@ -82,5 +81,23 @@ export const searchPlanets = (keyword) => {
         console.error(error);
         dispatch({ type: types.SEARCH_PLANETS_FAIL, payload: error });
       });
+  };
+};
+
+export const addPlanets = (data) => {
+  return (dispatch) => {
+    dispatch({
+      type: types.ADD_PLANETS,
+      payload: data,
+    });
+  };
+};
+
+export const editPlanets = (name, origin) => {
+  return (dispatch) => {
+    dispatch({
+      type: types.EDIT_PLANETS,
+      payload: { name, origin },
+    });
   };
 };
