@@ -125,22 +125,24 @@ const Home = (props) => {
               />
             </InfiniteScroll>
           )}
-          <input
-            title="Search Bar"
-            aria-label="search bar"
-            role="search"
-            className="pr-8 pl-4 py-2 rounded-md cursor-pointer border-black w-64 placeholder-gray-500 mt-10 ml-5"
-            type="text"
-            placeholder="Type your planet..."
-            value={name}
-            onChange={(v) => setName(v.target.value)}
-          />
-          <button
-            className="ml-5 bg-green-500 text-sm text-white p-5 w-30"
-            onClick={() => addPlanets(name)}
-          >
-            submit
-          </button>
+          <div className="mt-5 pb-5">
+            <input
+              title="Search Bar"
+              aria-label="search bar"
+              role="search"
+              className="pr-8 pl-4 py-2 rounded-md cursor-pointer border-black w-64 placeholder-gray-500 ml-5"
+              type="text"
+              placeholder="Type your planet..."
+              value={name}
+              onChange={(v) => setName(v.target.value)}
+            />
+            <button
+              className="bg-gray-900 pr-4 pl-4 py-2 rounded-md cursor-pointer border-black w-30 ml-5 text-white"
+              onClick={() => addPlanets(name)}
+            >
+              Add
+            </button>
+          </div>
         </div>
       </div>
     </div>

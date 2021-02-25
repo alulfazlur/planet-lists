@@ -106,7 +106,7 @@ export default function planetsReducer(planetsState = initialState, action) {
       edit.name = action.payload.name;
       return {
         ...planetsState,
-        planets: [...newPlanets, edit],
+        planets: [edit, ...newPlanets],
       };
     default:
       return planetsState;
